@@ -1,0 +1,18 @@
+data<-read.table("household_power_consumption.txt",header=TRUE,sep=";")
+data<-data[(data$Date=="2/2/2007"|data$Date=="1/2/2007"),]
+data$Global_active_power<-as.character(data$Global_active_power)
+data$Global_active_power<-as.numeric(data$Global_active_power)
+data$Date<-as.Date(data$Date,"%d/%m/%Y")
+data$Time<-paste(data$Date,data$Time)
+data$Time<-strptime(data$Time,"%Y-%m-%d %H:%M:%S")
+data$Sub_metering_1<-as.numeric(as.character(data$Sub_metering_1))
+data$Sub_metering_2<-as.numeric(as.character(data$Sub_metering_2))
+data$Sub_metering_3<-as.numeric(as.character(data$Sub_metering_3))
+
+png(filename="plot3.png",width=480,height=480)
+plot(data$Time,data$Sub_metering_1,xlab="",ylab="Energy sub metering",type="n")
+lines(data$Time,data$Sub_metering_1)
+lines(data$Time,data$Sub_metering_2,col="red")
+lines(data$Time,data$Sub_metering_3,col="blue")
+legend("topright",pch="_",col = c("black","blue", "red"), legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+dev.off()
